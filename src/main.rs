@@ -37,7 +37,7 @@ struct Opt {
 
 fn tagger() -> Result<(), git2::Error> {
     let opt = Opt::from_args();
-    let repo = Repository::open(&opt.repo)?;
+    let repo = Repository::discover(&opt.repo)?;
     let tags = repo.tag_names(None)?;
     let mut version = latest_version(&tags);
     if opt.fix {
