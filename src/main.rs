@@ -25,11 +25,11 @@ fn latest_version(tags: &git2::string_array::StringArray) -> Version {
 #[derive(StructOpt)]
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
-    #[structopt(long = "fix", help = "A bugfix release (3.2.1 -> 3.2.2)")]
+    #[structopt(long = "patch", help = "A bugfix release (3.2.1 -> 3.2.2)")]
     fix: bool,
-    #[structopt(long = "feature", help = "A normal release (3.2.1 -> 3.3.0)")]
+    #[structopt(long = "minor", help = "A normal release (3.2.1 -> 3.3.0)")]
     feature: bool,
-    #[structopt(long = "breaking", help = "An incompatible release (3.2.1 -> 4.0.0)")]
+    #[structopt(long = "major", help = "An incompatible release (3.2.1 -> 4.0.0)")]
     breaking: bool,
     #[structopt(default_value = ".", help = "Path to git repo")]
     repo: String,

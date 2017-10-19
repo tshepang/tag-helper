@@ -13,14 +13,14 @@ USAGE:
     tag-helper [FLAGS] [repo]
 
 FLAGS:
-        --breaking    An incompatible release (3.2.1 -> 4.0.0)
-        --feature     A normal release (3.2.1 -> 3.3.0)
-        --fix         A bugfix release (3.2.1 -> 3.2.2)
-    -h, --help        Prints help information
-    -V, --version     Prints version information
+        --major      An incompatible release (3.2.1 -> 4.0.0)
+        --minor      A normal release (3.2.1 -> 3.3.0)
+        --patch      A bugfix release (3.2.1 -> 3.2.2)
+    -h, --help       Prints help information
+    -V, --version    Prints version information
 
 ARGS:
-    <repo>    path to git repo [default: .]
+    <repo>    Path to git repo [default: .]
 ```
 
 All that's left is pushing the resulting tag to remote repo.
