@@ -1,4 +1,4 @@
-A tool to increment semver-comptatible git tags
+# tag-helper - A tool to increment semver-comptatible git tags
 
 It does following (tedious) steps in a single command:
 
@@ -24,3 +24,9 @@ ARGS:
 ```
 
 All that's left is pushing the resulting tag to remote repo.
+
+---
+
+The code is distributed under the terms of both the
+[MIT license](LICENSE-MIT) and the
+[Apache License (Version 2.0)](LICENSE-APACHE)
