@@ -14,3 +14,6 @@ git2 = "0.6"
 semver = "0.7"
 structopt = "0.1"
 structopt-derive = "0.1"
+
+[badges]
+travis-ci = { repository = "panoptix-za/tag-helper" }
