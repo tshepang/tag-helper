@@ -8,7 +8,7 @@ It does following (tedious) steps in a single command:
 - Determine which is latest
 - Tagging the repo with a version that follows the latest
 
-Following is a snippet of the `--help` option:
+Following is what the `--help` option looks like:
 
 ```
 USAGE:
