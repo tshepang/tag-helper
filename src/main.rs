@@ -1,5 +1,3 @@
-#![feature(ord_max_min)]
-
 extern crate semver;
 extern crate git2;
 extern crate structopt;
