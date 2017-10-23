@@ -2,11 +2,10 @@
 
 [![Linux build status](https://travis-ci.org/panoptix-za/tag-helper.svg?branch=master)](https://travis-ci.org/panoptix-za/tag-helper)
 
-It does following (tedious) steps in a single command:
+It does the following (tedious) steps in a single command:
 
-- Listing tags (which are in semver format)
-- Determine which is latest
-- Tagging the repo with a version that follows the latest
+- Listing latest tag (provided it's in semver format)
+- Tagging the repo with a version that increments that tag
 
 Following is what the `--help` option looks like:
 
@@ -25,7 +24,7 @@ ARGS:
     <repo>    Path to git repo [default: .]
 ```
 
-All that's left is pushing the resulting tag to remote repo.
+All that's left is pushing the resulting tag to remote repo (via `git push`).
 
 ---
 
