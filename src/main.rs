@@ -40,13 +40,10 @@ fn tagger() -> Result<(), git2::Error> {
     let mut version = latest_version(&tags);
     if opt.fix {
         version.increment_patch();
-        println!("new tag: {}", version);
     } else if opt.feature {
         version.increment_minor();
-        println!("new tag: {}", version);
     } else if opt.breaking {
         version.increment_major();
-        println!("new tag: {}", version);
     } else {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
@@ -55,6 +52,7 @@ fn tagger() -> Result<(), git2::Error> {
         }
         std::process::exit(0);
     }
+    println!("new tag: {}", version);
     let head_ref = repo.head()?;
     let head_object = head_ref.peel(git2::ObjectType::Commit)?;
     repo.tag_lightweight(&format!("v{}", version), &head_object, false)?;
