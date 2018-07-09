@@ -16,3 +16,4 @@ structopt = "0.2"
 
 [badges]
 travis-ci = { repository = "panoptix-za/tag-helper" }
+appveyor = { repository = "panoptix-za/tag-helper" }

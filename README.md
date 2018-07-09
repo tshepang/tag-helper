@@ -1,6 +1,7 @@
 # tag-helper - A tool to increment semver-compatible git tags
 
 [![Linux build status](https://travis-ci.org/panoptix-za/tag-helper.svg?branch=master)](https://travis-ci.org/panoptix-za/tag-helper)
+[![Windows build status](https://ci.appveyor.com/api/projects/status/github/panoptix-za/tag-helper?svg=true)](https://ci.appveyor.com/project/panoptix-za/tag-helper)
 
 It does the following (tedious) steps in a single command:
 
