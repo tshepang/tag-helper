@@ -29,6 +29,8 @@ struct Opt {
     feature: bool,
     #[structopt(long = "major", help = "An incompatible release (3.2.1 -> 4.0.0)")]
     breaking: bool,
+    #[structopt(long = "quiet", help = "Print just the version")]
+    quiet: bool,
     #[structopt(default_value = ".", help = "Path to git repo")]
     repo: String,
 }
@@ -47,12 +49,18 @@ fn tagger() -> Result<(), git2::Error> {
     } else {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
+        } else if opt.quiet {
+            println!("{}", version);
         } else {
             println!("latest version: {}", version);
         }
         std::process::exit(0);
     }
-    println!("new tag: {}", version);
+    if opt.quiet {
+        println!("{}", version);
+    } else {
+        println!("new tag: {}", version);
+    }
     let head_ref = repo.head()?;
     let head_object = head_ref.peel(git2::ObjectType::Commit)?;
     repo.tag_lightweight(&format!("v{}", version), &head_object, false)?;
