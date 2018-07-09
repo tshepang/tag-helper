@@ -26,6 +26,8 @@ ARGS:
 
 All that's left is pushing the resulting tag to remote repo (via `git push`).
 
+NOTE: minimum required rustc is v1.21, due to use of Iterator::for_each by structopt.
+
 ---
 
 The code is distributed under the terms of both the
