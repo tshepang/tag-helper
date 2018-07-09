@@ -50,16 +50,16 @@ fn tagger() -> Result<(), git2::Error> {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
         } else if opt.quiet {
-            println!("{}", version);
+            println!("v{}", version);
         } else {
-            println!("latest version: {}", version);
+            println!("latest version: v{}", version);
         }
         std::process::exit(0);
     }
     if opt.quiet {
-        println!("{}", version);
+        println!("v{}", version);
     } else {
-        println!("new tag: {}", version);
+        println!("new tag: v{}", version);
     }
     let head_ref = repo.head()?;
     let head_object = head_ref.peel(git2::ObjectType::Commit)?;
