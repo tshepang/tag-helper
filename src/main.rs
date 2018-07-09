@@ -1,11 +1,11 @@
-extern crate semver;
 extern crate git2;
+extern crate semver;
 extern crate structopt;
 #[macro_use]
 extern crate structopt_derive;
 
-use semver::Version;
 use git2::Repository;
+use semver::Version;
 use structopt::StructOpt;
 
 fn latest_version(tags: &git2::string_array::StringArray) -> Version {
