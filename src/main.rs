@@ -9,7 +9,7 @@ use structopt::StructOpt;
 
 fn latest_version(tags: &git2::string_array::StringArray) -> Version {
     let mut latest_version = Version::parse("0.0.0").unwrap();
-    for tag in tags.iter() {
+    for tag in tags {
         if let Some(tag) = tag {
             if let Ok(version) = Version::parse(tag.trim_left_matches('v')) {
                 latest_version = version.max(latest_version);
