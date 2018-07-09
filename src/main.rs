@@ -7,16 +7,31 @@ use git2::Repository;
 use semver::Version;
 use structopt::StructOpt;
 
-fn latest_version(tags: &git2::string_array::StringArray) -> Version {
+fn latest_version(
+    tags: &git2::string_array::StringArray,
+    repo: &git2::Repository,
+) -> (Version, bool) {
     let mut latest_version = Version::parse("0.0.0").unwrap();
-    for tag in tags {
-        if let Some(tag) = tag {
-            if let Ok(version) = Version::parse(tag.trim_left_matches('v')) {
-                latest_version = version.max(latest_version);
+    let mut increment = true;
+    if let Ok(head) = repo.head() {
+        let head = git2::Branch::wrap(head);
+        let head_ref = head.get();
+        for tag in tags {
+            if let Some(tag) = tag {
+                let tag_name = format!("refs/tags/{}", tag);
+                let tag = tag.trim_left_matches('v');
+                if let Ok(version) = Version::parse(tag) {
+                    if let Ok(reference) = repo.find_reference(&tag_name) {
+                        if &reference == head_ref && Version::parse(&tag).is_ok() {
+                            increment = false;
+                        }
+                    }
+                    latest_version = latest_version.max(version);
+                }
             }
         }
     }
-    latest_version
+    (latest_version, increment)
 }
 
 #[derive(StructOpt)]
@@ -30,6 +45,8 @@ struct Opt {
     breaking: bool,
     #[structopt(long = "quiet", help = "Print just the version")]
     quiet: bool,
+    #[structopt(long = "force", help = "Allow more than one tag for HEAD")]
+    force: bool,
     #[structopt(default_value = ".", help = "Path to git repo")]
     repo: String,
 }
@@ -38,13 +55,22 @@ fn tagger() -> Result<(), git2::Error> {
     let opt = Opt::from_args();
     let repo = Repository::discover(&opt.repo)?;
     let tags = repo.tag_names(None)?;
-    let mut version = latest_version(&tags);
+    let (mut version, mut increment) = latest_version(&tags, &repo);
+    if opt.force {
+        increment = true;
+    }
     if opt.fix {
-        version.increment_patch();
+        if increment {
+            version.increment_patch();
+        }
     } else if opt.feature {
-        version.increment_minor();
+        if increment {
+            version.increment_minor();
+        }
     } else if opt.breaking {
-        version.increment_major();
+        if increment {
+            version.increment_major();
+        }
     } else {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
@@ -55,14 +81,21 @@ fn tagger() -> Result<(), git2::Error> {
         }
         std::process::exit(0);
     }
-    if opt.quiet {
-        println!("v{}", version);
+    if increment {
+        if opt.quiet {
+            println!("v{}", version);
+        } else {
+            println!("new tag: v{}", version);
+        }
+        if increment {
+            let head_ref = repo.head()?;
+            let head_object = head_ref.peel(git2::ObjectType::Commit)?;
+            repo.tag_lightweight(&format!("v{}", version), &head_object, false)?;
+        }
     } else {
-        println!("new tag: v{}", version);
+        eprintln!("HEAD is already tagged: v{}", version);
     }
-    let head_ref = repo.head()?;
-    let head_object = head_ref.peel(git2::ObjectType::Commit)?;
-    repo.tag_lightweight(&format!("v{}", version), &head_object, false)?;
+
     Ok(())
 }
 
