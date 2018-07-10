@@ -18,7 +18,9 @@ FLAGS:
         --major      An incompatible release (3.2.1 -> 4.0.0)
         --minor      A normal release (3.2.1 -> 3.3.0)
         --patch      A bugfix release (3.2.1 -> 3.2.2)
+        --force      Allow more than one tag for HEAD
     -h, --help       Prints help information
+        --quiet      Print just the version
     -V, --version    Prints version information
 
 ARGS:
