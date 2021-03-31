@@ -1,8 +1,3 @@
-extern crate git2;
-extern crate semver;
-#[macro_use]
-extern crate structopt;
-
 use git2::Repository;
 use semver::Version;
 use structopt::StructOpt;
