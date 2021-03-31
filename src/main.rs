@@ -19,7 +19,7 @@ fn latest_version(
         for tag in tags {
             if let Some(tag) = tag {
                 let tag_name = format!("refs/tags/{}", tag);
-                let tag = tag.trim_left_matches('v');
+                let tag = tag.trim_start_matches('v');
                 if let Ok(version) = Version::parse(tag) {
                     if let Ok(reference) = repo.find_reference(&tag_name) {
                         if &reference == head_ref && Version::parse(&tag).is_ok() {
