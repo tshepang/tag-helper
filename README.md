@@ -29,7 +29,7 @@ ARGS:
 
 All that's left is pushing the resulting tag to remote repo (via `git push`).
 
-NOTE: minimum required rustc is v1.21, due to use of Iterator::for_each by structopt.
+NOTE: minimum required rustc is v1.45, due to use of `str::strip_prefix` by git2.
 
 ---
 
