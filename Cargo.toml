@@ -1,6 +1,6 @@
 [package]
 name = "tag-helper"
-version = "0.3.1"
+version = "0.3.2"
 description = "Increments semver-compatible git tags"
 repository = "https://github.com/panoptix-za/tag-helper"
 license = "MIT/Apache-2.0"
