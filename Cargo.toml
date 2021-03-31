@@ -13,7 +13,7 @@ edition = "2018"
 [dependencies]
 git2 = "0.13"
 semver = "0.11"
-structopt = "0.2"
+structopt = "0.3"
 
 [badges]
 travis-ci = { repository = "panoptix-za/tag-helper" }
