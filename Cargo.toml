@@ -2,7 +2,7 @@
 name = "tag-helper"
 version = "0.3.2"
 description = "Increments semver-compatible git tags"
-repository = "https://github.com/panoptix-za/tag-helper"
+repository = "https://github.com/tshepang/tag-helper"
 license = "MIT/Apache-2.0"
 readme = "README.md"
 categories = ["command-line-utilities"]
