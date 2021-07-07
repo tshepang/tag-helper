@@ -56,15 +56,18 @@ fn tagger() -> Result<(), git2::Error> {
     }
     if opt.fix {
         if increment {
-            version.increment_patch();
+            version.patch += 1;
         }
     } else if opt.feature {
         if increment {
-            version.increment_minor();
+            version.minor += 1;
+            version.patch = 0;
         }
     } else if opt.breaking {
         if increment {
-            version.increment_major();
+            version.major += 1;
+            version.minor = 0;
+            version.patch = 0;
         }
     } else {
         if version == Version::parse("0.0.0").unwrap() {
