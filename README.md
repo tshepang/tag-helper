@@ -12,16 +12,18 @@ Following is what the `--help` option looks like:
 
 ```
 USAGE:
-    tag-helper [FLAGS] [repo]
+    tag-helper [OPTIONS] [repo]
 
-FLAGS:
-        --major      An incompatible release (3.2.1 -> 4.0.0)
-        --minor      A normal release (3.2.1 -> 3.3.0)
-        --patch      A bugfix release (3.2.1 -> 3.2.2)
-        --force      Allow more than one tag for HEAD
-    -h, --help       Prints help information
-        --quiet      Print just the version
-    -V, --version    Prints version information
+OPTIONS:
+        --build <build>    A build-release (3.2.1 -> 3.2.1+build)
+        --force            Allow more than one tag for HEAD
+    -h, --help             Prints help information
+        --major            An incompatible release (3.2.1 -> 4.0.0)
+        --minor            A normal release (3.2.1 -> 3.3.0)
+        --patch            A bugfix release (3.2.1 -> 3.2.2)
+        --pre <pre>        A pre-release (3.2.1 -> 3.2.1-beta.0)
+        --quiet            Print just the version
+    -V, --version          Prints version information
 
 ARGS:
     <repo>    Path to git repo [default: .]
