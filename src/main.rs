@@ -30,9 +30,9 @@ fn latest_version(
     (latest_version, increment)
 }
 
+/// A tool to increment semver-comptatible git tags
 #[derive(StructOpt)]
 #[structopt(setting = clap::AppSettings::UnifiedHelpMessage)]
-#[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
     /// A build-release (3.2.1 -> 3.2.1+build)
     #[structopt(long)]
