@@ -33,10 +33,10 @@ fn latest_version(
 #[derive(StructOpt)]
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
-    /// A build-release (3.2.1 -> 3.2.2)
+    /// A build-release (3.2.1 -> 3.2.1+build)
     #[structopt(long)]
     build: Option<String>,
-    /// A pre-release (3.2.1 -> 3.2.2)
+    /// A pre-release (3.2.1 -> 3.2.1-beta.0)
     #[structopt(long)]
     pre: Option<String>,
     /// A bugfix release (3.2.1 -> 3.2.2)
