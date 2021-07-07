@@ -1,7 +1,7 @@
 use anyhow::Result;
 use git2::Repository;
 use semver::Version;
-use structopt::StructOpt;
+use structopt::{clap, StructOpt};
 
 fn latest_version(
     tags: &git2::string_array::StringArray,
@@ -31,6 +31,7 @@ fn latest_version(
 }
 
 #[derive(StructOpt)]
+#[structopt(setting = clap::AppSettings::UnifiedHelpMessage)]
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
     /// A build-release (3.2.1 -> 3.2.1+build)
