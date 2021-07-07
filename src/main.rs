@@ -1,5 +1,4 @@
-use std::error::Error;
-
+use anyhow::Result;
 use git2::Repository;
 use semver::Version;
 use structopt::StructOpt;
@@ -60,7 +59,7 @@ struct Opt {
     repo: String,
 }
 
-fn tagger() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<()> {
     let opt = Opt::from_args();
     let repo = Repository::discover(&opt.repo)?;
     let tags = repo.tag_names(None)?;
@@ -120,11 +119,4 @@ fn tagger() -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
-}
-
-fn main() {
-    if let Err(why) = tagger() {
-        eprintln!("{}", why);
-        std::process::exit(1);
-    }
 }
