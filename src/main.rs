@@ -3,33 +3,6 @@ use git2::Repository;
 use semver::Version;
 use structopt::{clap, StructOpt};
 
-fn latest_version(
-    tags: &git2::string_array::StringArray,
-    repo: &git2::Repository,
-) -> (Version, bool) {
-    let mut latest_version = Version::parse("0.0.0").unwrap();
-    let mut increment = true;
-    if let Ok(head) = repo.head() {
-        let head = git2::Branch::wrap(head);
-        let head_ref = head.get();
-        for tag in tags {
-            if let Some(tag) = tag {
-                let tag_name = format!("refs/tags/{}", tag);
-                let tag = tag.trim_start_matches('v');
-                if let Ok(version) = Version::parse(tag) {
-                    if let Ok(reference) = repo.find_reference(&tag_name) {
-                        if &reference == head_ref && Version::parse(&tag).is_ok() {
-                            increment = false;
-                        }
-                    }
-                    latest_version = latest_version.max(version);
-                }
-            }
-        }
-    }
-    (latest_version, increment)
-}
-
 /// A tool to increment semver-comptatible git tags
 #[derive(StructOpt)]
 #[structopt(setting = clap::AppSettings::UnifiedHelpMessage)]
@@ -58,6 +31,33 @@ struct Opt {
     /// Path to git repo
     #[structopt(default_value = ".")]
     repo: String,
+}
+
+fn latest_version(
+    tags: &git2::string_array::StringArray,
+    repo: &git2::Repository,
+) -> (Version, bool) {
+    let mut latest_version = Version::parse("0.0.0").unwrap();
+    let mut increment = true;
+    if let Ok(head) = repo.head() {
+        let head = git2::Branch::wrap(head);
+        let head_ref = head.get();
+        for tag in tags {
+            if let Some(tag) = tag {
+                let tag_name = format!("refs/tags/{}", tag);
+                let tag = tag.trim_start_matches('v');
+                if let Ok(version) = Version::parse(tag) {
+                    if let Ok(reference) = repo.find_reference(&tag_name) {
+                        if &reference == head_ref && Version::parse(&tag).is_ok() {
+                            increment = false;
+                        }
+                    }
+                    latest_version = latest_version.max(version);
+                }
+            }
+        }
+    }
+    (latest_version, increment)
 }
 
 fn main() -> Result<()> {
