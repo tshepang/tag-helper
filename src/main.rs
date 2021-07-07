@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use git2::Repository;
 use semver::Version;
 use structopt::StructOpt;
@@ -32,6 +34,12 @@ fn latest_version(
 #[derive(StructOpt)]
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
+    /// A build-release (3.2.1 -> 3.2.2)
+    #[structopt(long)]
+    build: Option<String>,
+    /// A pre-release (3.2.1 -> 3.2.2)
+    #[structopt(long)]
+    pre: Option<String>,
     /// A bugfix release (3.2.1 -> 3.2.2)
     #[structopt(long)]
     patch: bool,
@@ -52,7 +60,7 @@ struct Opt {
     repo: String,
 }
 
-fn tagger() -> Result<(), git2::Error> {
+fn tagger() -> Result<(), Box<dyn Error>> {
     let opt = Opt::from_args();
     let repo = Repository::discover(&opt.repo)?;
     let tags = repo.tag_names(None)?;
@@ -60,20 +68,31 @@ fn tagger() -> Result<(), git2::Error> {
     if opt.force {
         increment = true;
     }
-    if opt.patch {
+    if let Some(build) = opt.build {
+        if increment {
+            version.build = semver::BuildMetadata::new(&build)?;
+        }
+    } else if let Some(pre) = opt.pre {
+        if increment {
+            version.pre = semver::Prerelease::new(&pre)?;
+        }
+    } else if opt.patch {
         if increment {
             version.patch += 1;
+            version.pre = semver::Prerelease::EMPTY;
         }
     } else if opt.minor {
         if increment {
             version.minor += 1;
             version.patch = 0;
+            version.pre = semver::Prerelease::EMPTY;
         }
     } else if opt.major {
         if increment {
             version.major += 1;
             version.minor = 0;
             version.patch = 0;
+            version.pre = semver::Prerelease::EMPTY;
         }
     } else {
         if version == Version::parse("0.0.0").unwrap() {
