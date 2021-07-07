@@ -33,11 +33,11 @@ fn latest_version(
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
     #[structopt(long = "patch", help = "A bugfix release (3.2.1 -> 3.2.2)")]
-    fix: bool,
+    patch: bool,
     #[structopt(long = "minor", help = "A normal release (3.2.1 -> 3.3.0)")]
-    feature: bool,
+    minor: bool,
     #[structopt(long = "major", help = "An incompatible release (3.2.1 -> 4.0.0)")]
-    breaking: bool,
+    major: bool,
     #[structopt(long = "quiet", help = "Print just the version")]
     quiet: bool,
     #[structopt(long = "force", help = "Allow more than one tag for HEAD")]
@@ -54,16 +54,16 @@ fn tagger() -> Result<(), git2::Error> {
     if opt.force {
         increment = true;
     }
-    if opt.fix {
+    if opt.patch {
         if increment {
             version.patch += 1;
         }
-    } else if opt.feature {
+    } else if opt.minor {
         if increment {
             version.minor += 1;
             version.patch = 0;
         }
-    } else if opt.breaking {
+    } else if opt.major {
         if increment {
             version.major += 1;
             version.minor = 0;
