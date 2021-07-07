@@ -32,17 +32,23 @@ fn latest_version(
 #[derive(StructOpt)]
 #[structopt(about = "A tool to increment semver-comptatible git tags")]
 struct Opt {
-    #[structopt(long = "patch", help = "A bugfix release (3.2.1 -> 3.2.2)")]
+    /// A bugfix release (3.2.1 -> 3.2.2)
+    #[structopt(long)]
     patch: bool,
-    #[structopt(long = "minor", help = "A normal release (3.2.1 -> 3.3.0)")]
+    /// A normal release (3.2.1 -> 3.3.0)
+    #[structopt(long)]
     minor: bool,
-    #[structopt(long = "major", help = "An incompatible release (3.2.1 -> 4.0.0)")]
+    /// An incompatible release (3.2.1 -> 4.0.0)
+    #[structopt(long)]
     major: bool,
-    #[structopt(long = "quiet", help = "Print just the version")]
+    /// Print just the version
+    #[structopt(long)]
     quiet: bool,
-    #[structopt(long = "force", help = "Allow more than one tag for HEAD")]
+    /// Allow more than one tag for HEAD
+    #[structopt(long)]
     force: bool,
-    #[structopt(default_value = ".", help = "Path to git repo")]
+    /// Path to git repo
+    #[structopt(default_value = ".")]
     repo: String,
 }
 
