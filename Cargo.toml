@@ -7,7 +7,7 @@ license = "MIT/Apache-2.0"
 readme = "README.md"
 categories = ["command-line-utilities"]
 keywords = ["git"]
-authors = ["Tshepang Lekhonkhobe <tshepang@gmail.com>"]
+authors = ["Tshepang Mbambo <tshepang@gmail.com>"]
 edition = "2018"
 
 [dependencies]
