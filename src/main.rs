@@ -21,9 +21,6 @@ struct Opt {
     /// An incompatible release (3.2.1 -> 4.0.0)
     #[arg(long)]
     major: bool,
-    /// Print just the version
-    #[arg(long)]
-    quiet: bool,
     /// Allow more than one tag for HEAD
     #[arg(long)]
     force: bool,
@@ -94,19 +91,15 @@ fn main() -> Result<()> {
     } else {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
-        } else if opt.quiet {
-            println!("v{version}");
         } else {
-            println!("latest version: v{version}");
+            eprint!("latest version: ");
+            println!("v{version}");
         }
         std::process::exit(0);
     }
     if increment {
-        if opt.quiet {
-            println!("v{version}");
-        } else {
-            println!("new tag: v{version}");
-        }
+        eprint!("new tag: ");
+        println!("v{version}");
         if increment {
             let head_ref = repo.head()?;
             let head_object = head_ref.peel(git2::ObjectType::Commit)?;
