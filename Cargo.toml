@@ -24,4 +24,3 @@ features = ["derive"]
 inherits = "release"
 debug = true
 split-debuginfo = "packed"
-
