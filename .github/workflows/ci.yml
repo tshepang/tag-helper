@@ -18,23 +18,20 @@ jobs:
           - macOS-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - name: Install ${{ matrix.rust }}
-      uses: actions-rs/toolchain@v1
+    - name: Install ${{ matrix.rust }} toolchain
+      uses: dtolnay/rust-toolchain@master
       with:
           toolchain: ${{ matrix.rust }}
-          override: true
 
     - name: Build
-      uses: actions-rs/cargo@v1
-      with:
-        command: build
+      run: cargo build
 
   security-audit:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions-rs/audit-check@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
