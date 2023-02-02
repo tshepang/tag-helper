@@ -41,18 +41,16 @@ fn latest_version(
     if let Ok(head) = repo.head() {
         let head = git2::Branch::wrap(head);
         let head_ref = head.get();
-        for tag in tags {
-            if let Some(tag) = tag {
-                let tag_name = format!("refs/tags/{}", tag);
-                let tag = tag.trim_start_matches('v');
-                if let Ok(version) = Version::parse(tag) {
-                    if let Ok(reference) = repo.find_reference(&tag_name) {
-                        if &reference == head_ref && Version::parse(&tag).is_ok() {
-                            increment = false;
-                        }
+        for tag in tags.into_iter().flatten() {
+            let tag_name = format!("refs/tags/{tag}");
+            let tag = tag.trim_start_matches('v');
+            if let Ok(version) = Version::parse(tag) {
+                if let Ok(reference) = repo.find_reference(&tag_name) {
+                    if &reference == head_ref && Version::parse(tag).is_ok() {
+                        increment = false;
                     }
-                    latest_version = latest_version.max(version);
                 }
+                latest_version = latest_version.max(version);
             }
         }
     }
@@ -97,25 +95,25 @@ fn main() -> Result<()> {
         if version == Version::parse("0.0.0").unwrap() {
             println!("The repository does not have a semver tag");
         } else if opt.quiet {
-            println!("v{}", version);
+            println!("v{version}");
         } else {
-            println!("latest version: v{}", version);
+            println!("latest version: v{version}");
         }
         std::process::exit(0);
     }
     if increment {
         if opt.quiet {
-            println!("v{}", version);
+            println!("v{version}");
         } else {
-            println!("new tag: v{}", version);
+            println!("new tag: v{version}");
         }
         if increment {
             let head_ref = repo.head()?;
             let head_object = head_ref.peel(git2::ObjectType::Commit)?;
-            repo.tag_lightweight(&format!("v{}", version), &head_object, false)?;
+            repo.tag_lightweight(&format!("v{version}"), &head_object, false)?;
         }
     } else {
-        eprintln!("HEAD is already tagged: v{}", version);
+        eprintln!("HEAD is already tagged: v{version}");
     }
 
     Ok(())
