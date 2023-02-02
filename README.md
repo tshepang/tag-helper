@@ -11,27 +11,28 @@ It does the following (tedious) steps in a single command:
 Following is what the `--help` option looks like:
 
 ```
-USAGE:
-    tag-helper [OPTIONS] [repo]
+Usage: tag-helper [OPTIONS] [REPO]
 
-OPTIONS:
-        --build <build>    A build-release (3.2.1 -> 3.2.1+build)
-        --force            Allow more than one tag for HEAD
-    -h, --help             Prints help information
-        --major            An incompatible release (3.2.1 -> 4.0.0)
-        --minor            A normal release (3.2.1 -> 3.3.0)
-        --patch            A bugfix release (3.2.1 -> 3.2.2)
-        --pre <pre>        A pre-release (3.2.1 -> 3.2.1-beta.0)
-        --quiet            Print just the version
-    -V, --version          Prints version information
+Arguments:
+  [REPO]  Path to git repo [default: .]
 
-ARGS:
-    <repo>    Path to git repo [default: .]
+Options:
+      --build <BUILD>  A build-release (3.2.1 -> 3.2.1+build)
+      --pre <PRE>      A pre-release (3.2.1 -> 3.2.1-beta.0)
+      --patch          A bugfix release (3.2.1 -> 3.2.2)
+      --minor          A normal release (3.2.1 -> 3.3.0)
+      --major          An incompatible release (3.2.1 -> 4.0.0)
+      --quiet          Print just the version
+      --force          Allow more than one tag for HEAD
+  -h, --help           Print help
+  -V, --version        Print version
 ```
 
 All that's left is pushing the resulting tag to remote repo (via `git push`).
 
-NOTE: minimum required rustc is v1.45, due to use of `str::strip_prefix` by git2.
+NOTE: minimum required rustc is v1.64, [due to clap].
+
+[due to clap]: https://github.com/clap-rs/clap/pull/4615
 
 ---
 

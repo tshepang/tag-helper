@@ -1,35 +1,34 @@
 use anyhow::Result;
+use clap::Parser;
 use git2::Repository;
 use semver::Version;
-use structopt::{clap, StructOpt};
 
-/// A tool to increment semver-comptatible git tags
-#[derive(StructOpt)]
-#[structopt(setting = clap::AppSettings::UnifiedHelpMessage)]
+#[derive(Parser)]
+#[command(about, version)]
 struct Opt {
     /// A build-release (3.2.1 -> 3.2.1+build)
-    #[structopt(long)]
+    #[arg(long)]
     build: Option<String>,
     /// A pre-release (3.2.1 -> 3.2.1-beta.0)
-    #[structopt(long)]
+    #[arg(long)]
     pre: Option<String>,
     /// A bugfix release (3.2.1 -> 3.2.2)
-    #[structopt(long)]
+    #[arg(long)]
     patch: bool,
     /// A normal release (3.2.1 -> 3.3.0)
-    #[structopt(long)]
+    #[arg(long)]
     minor: bool,
     /// An incompatible release (3.2.1 -> 4.0.0)
-    #[structopt(long)]
+    #[arg(long)]
     major: bool,
     /// Print just the version
-    #[structopt(long)]
+    #[arg(long)]
     quiet: bool,
     /// Allow more than one tag for HEAD
-    #[structopt(long)]
+    #[arg(long)]
     force: bool,
     /// Path to git repo
-    #[structopt(default_value = ".")]
+    #[arg(default_value = ".")]
     repo: String,
 }
 
@@ -61,7 +60,7 @@ fn latest_version(
 }
 
 fn main() -> Result<()> {
-    let opt = Opt::from_args();
+    let opt = Opt::parse();
     let repo = Repository::discover(&opt.repo)?;
     let tags = repo.tag_names(None)?;
     let (mut version, mut increment) = latest_version(&tags, &repo);
