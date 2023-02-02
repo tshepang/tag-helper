@@ -5,7 +5,7 @@ use semver::Version;
 
 #[derive(Parser)]
 #[command(about, version)]
-struct Opt {
+struct Cli {
     /// A build-release (3.2.1 -> 3.2.1+build)
     #[arg(long)]
     build: Option<String>,
@@ -55,33 +55,33 @@ fn latest_version(
 }
 
 fn main() -> Result<()> {
-    let opt = Opt::parse();
-    let repo = Repository::discover(&opt.repo)?;
+    let cli = Cli::parse();
+    let repo = Repository::discover(&cli.repo)?;
     let tags = repo.tag_names(None)?;
     let (mut version, mut increment) = latest_version(&tags, &repo);
-    if opt.force {
+    if cli.force {
         increment = true;
     }
-    if let Some(build) = opt.build {
+    if let Some(build) = cli.build {
         if increment {
             version.build = semver::BuildMetadata::new(&build)?;
         }
-    } else if let Some(pre) = opt.pre {
+    } else if let Some(pre) = cli.pre {
         if increment {
             version.pre = semver::Prerelease::new(&pre)?;
         }
-    } else if opt.patch {
+    } else if cli.patch {
         if increment {
             version.patch += 1;
             version.pre = semver::Prerelease::EMPTY;
         }
-    } else if opt.minor {
+    } else if cli.minor {
         if increment {
             version.minor += 1;
             version.patch = 0;
             version.pre = semver::Prerelease::EMPTY;
         }
-    } else if opt.major {
+    } else if cli.major {
         if increment {
             version.major += 1;
             version.minor = 0;
